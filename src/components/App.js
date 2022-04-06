@@ -3,6 +3,7 @@ import React from 'react';
 import {data} from '../data';
 import Navbar from './Navbar';
 import MovieCard from './MovieCard';
+import addMovies from '../actions';
 
 
 class App extends React.Component {
@@ -19,10 +20,7 @@ class App extends React.Component {
 
     // console.log('state before mount',store.getState());
 
-    store.dispatch({
-      type: 'ADD_MOVIES',
-      movies: data
-    });
+    store.dispatch(addMovies(data));
 
     // console.log('state after mount',store.getState());
   }
