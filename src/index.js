@@ -3,14 +3,12 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import {createStore} from 'redux';
 
-import movies from './reducers';
+import rootReducer from './reducers';
 import './index.css';
 import App from './components/App';
 
-const store = createStore(movies);
+const store = createStore(rootReducer);
 
-// console.log('store',store);
-// console.log('state',store.getState());
 
 const container = document.getElementById('root');
 const root = createRoot(container);
