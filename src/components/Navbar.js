@@ -1,5 +1,5 @@
 import React from 'react';
-import { StoreContext } from '..';
+import { connect } from '..';
 
 import { addToMovies, handleMovieSearch } from '../actions';
 
@@ -20,19 +20,18 @@ class Navbar extends React.Component {
 
   handleSearch = () => {
     const {searchText} = this.state;
-    const {store} = this.props;
-    store.dispatch(handleMovieSearch(searchText));
+    const {dispatch} = this.props;
+    dispatch(handleMovieSearch(searchText));
   }
 
   handleAddToMovies = (movie) => {
-    const {store} = this.props;
-    store.dispatch(addToMovies(movie));
+    const {dispatch} = this.props;
+    dispatch(addToMovies(movie));
   }
 
     render(){
-      const {store} = this.props;
-      const result = store.getState().search.result;
-      const showSearchResult = store.getState().search.showSearchResult;
+      const {result} = this.props;
+      const showSearchResult = this.props.showSearchResult;
         return (
             <div className="nav">
               <div className='search-container'>
@@ -55,14 +54,23 @@ class Navbar extends React.Component {
     }
 }
 
-class NavbarWrapper extends React.Component{
-  render() {
-    return(
-      <StoreContext.Consumer>
-        {(store) => <Navbar store={store}/>}
-      </StoreContext.Consumer>
-    )
+// class NavbarWrapper extends React.Component{
+//   render() {
+//     return(
+//       <StoreContext.Consumer>
+//         {(store) => <Navbar store={store}/>}
+//       </StoreContext.Consumer>
+//     )
+//   }
+// }
+
+function mapStateToProps(state){
+  return{
+    result: state.search.result,
+    showSearchResult: state.search.showSearchResult
   }
 }
 
-export default NavbarWrapper;
+const ConnectedNavbarComponent = connect(mapStateToProps)(Navbar);
+
+export default ConnectedNavbarComponent;
