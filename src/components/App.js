@@ -53,14 +53,18 @@ class App extends React.Component {
   }
 
   render() {
-    const {movies} = this.props.store.getState(); //{ movies: {}, search: {} }
+    const {movies,search} = this.props.store.getState(); //{ movies: {}, search: {} }
     const {list,favourites,showFavourites} = movies
     const moviesList = showFavourites ? favourites : list;
     // console.log(showFavourites);
     console.log('from render',this.props.store.getState());
     return (
       <div className="App">
-        <Navbar />
+        <Navbar 
+          dispatch={this.props.store.dispatch}
+          result={search.result}
+          showSearchResult={search.showSearchResult}
+        />
         <div className="main">
           <div className="tabs">
             <div className={`tab ${showFavourites ? '' : 'active-tabs'}`} onClick={this.handleAllMovies}>Movies</div>
