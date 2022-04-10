@@ -1,4 +1,5 @@
 import React from 'react';
+import { StoreContext } from '..';
 
 import { addToMovies, handleMovieSearch } from '../actions';
 
@@ -7,7 +8,6 @@ class Navbar extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      showSearchResults: true,
       searchText: ''
     }
   }
@@ -20,16 +20,19 @@ class Navbar extends React.Component {
 
   handleSearch = () => {
     const {searchText} = this.state;
-    this.props.dispatch(handleMovieSearch(searchText));
+    const {store} = this.props;
+    store.dispatch(handleMovieSearch(searchText));
   }
 
   handleAddToMovies = (movie) => {
-    this.props.dispatch(addToMovies(movie));
+    const {store} = this.props;
+    store.dispatch(addToMovies(movie));
   }
 
     render(){
-      const {result} = this.props;
-      const showSearchResult = this.props.showSearchResult;
+      const {store} = this.props;
+      const result = store.getState().search.result;
+      const showSearchResult = store.getState().search.showSearchResult;
         return (
             <div className="nav">
               <div className='search-container'>
@@ -52,4 +55,14 @@ class Navbar extends React.Component {
     }
 }
 
-export default Navbar;
+class NavbarWrapper extends React.Component{
+  render() {
+    return(
+      <StoreContext.Consumer>
+        {(store) => <Navbar store={store}/>}
+      </StoreContext.Consumer>
+    )
+  }
+}
+
+export default NavbarWrapper;

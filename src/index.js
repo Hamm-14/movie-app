@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext } from 'react';
 // import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import {createStore, applyMiddleware} from 'redux';
@@ -38,10 +38,27 @@ const logger = ({dispatch, getState}) => (next) => (action) => {
 
 const store = createStore(rootReducer,applyMiddleware(logger,thunk));
 
+export const StoreContext = createContext();
+
+class Provider extends React.Component{
+  render() {
+    const {store} = this.props;
+    return(
+      <StoreContext.Provider value={store}>
+        {this.props.children}
+      </StoreContext.Provider>
+    )
+  }
+}
 
 const container = document.getElementById('root');
 const root = createRoot(container);
-root.render(<App store={store} />);
+
+root.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
 
 
 
